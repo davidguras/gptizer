@@ -1,0 +1,29 @@
+{
+	"devDependencies": {
+		"vite": "^4.2.1",
+		"typescript": "^5.0.4",
+		"postcss": "^8.4.21",
+		"postcss-preset-env": "^8.3.0",
+		"cssnano": "^6.0.0",
+		"eslint": "^8.38.0" ,
+		"@typescript-eslint/eslint-plugin": "^5.57.1",
+		"@wordpress/eslint-plugina": "^14.3.0",
+		"vite-plugin-eslint": "^1.8.1",
+		"eslint-plugin-jsdoc": "^40.1.2"
+	},
+
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite",
+		"lint:php": "composer run-script phpcs",
+		"clean": "rm -rf assets/build/*",
+		"svg": "svgr -d assets/src/js/icons assets/src/icons",
+		"lint:php:fix": "vendor/bin/phpcbf",
+		"lint": "eslint assets/src/js/*",
+		"lint:fix": "eslint --fix assets/src/js/*",
+		"lint-css": "stylelint 'assets/src/sass/**/*.scss'",
+		"lint-css:fix": "npm run lint-css -- --fix",
+		"precommit": "npm run lint:php && npm run lint-css:fix && npm run lint:fix && npm run prod",
+		"cypress:open": "node_modules/.bin/cypress open"
+	}
+}

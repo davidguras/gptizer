@@ -1,0 +1,36 @@
+{
+  "name": "davidguras/gptizer",
+  "description": "The ChatGPT Editor WordPress plugin integrates with the ChatGPT API to improve the text in your posts and pages. With the plugin, you can add a new button and dropdown field to the WordPress editor that sends the text to the ChatGPT API and displays the processed text back in the editor.",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "David Guras"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "GPTizer\\": "src/"
+    }
+  },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^2.3",
+    "squizlabs/php_codesniffer": "^3.6",
+    "phpcompatibility/phpcompatibility-wp": "^2.1"
+  },
+  "scripts": {
+    "phpcs": "phpcs"
+  }
+}
