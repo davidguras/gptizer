@@ -1,17 +1,25 @@
 {
 	"devDependencies": {
-		"vite": "^4.2.1",
-		"typescript": "^5.0.4",
+		"@rollup/plugin-babel": "^6.0.3",
+		"@rollup/plugin-image": "^3.0.2",
+		"@rollup/plugin-url": "^8.0.1",
+		"@typescript-eslint/eslint-plugin": "^5.57.1",
+		"@wordpress/eslint-plugin": "^14.3.0",
+		"@wordpress/stylelint-config": "^21.13.0",
+		"cssnano": "^6.0.0",
+		"eslint": "^8.38.0",
+		"eslint-plugin-jsdoc": "^40.1.2",
 		"postcss": "^8.4.21",
 		"postcss-preset-env": "^8.3.0",
-		"cssnano": "^6.0.0",
-		"eslint": "^8.38.0" ,
-		"@typescript-eslint/eslint-plugin": "^5.57.1",
-		"@wordpress/eslint-plugina": "^14.3.0",
+		"rollup-plugin-copy": "^3.4.0",
+		"rollup-plugin-postcss": "^4.0.2",
+		"stylelint": "^15.4.0",
+		"stylelint-config-standard": "^32.0.0",
+		"typescript": "^5.0.4",
+		"vite": "^4.2.1",
 		"vite-plugin-eslint": "^1.8.1",
-		"eslint-plugin-jsdoc": "^40.1.2"
+		"vite-plugin-stylelint": "^4.3.0"
 	},
-
 	"scripts": {
 		"build": "vite build",
 		"dev": "vite",
@@ -21,7 +29,7 @@
 		"lint:php:fix": "vendor/bin/phpcbf",
 		"lint": "eslint assets/src/js/*",
 		"lint:fix": "eslint --fix assets/src/js/*",
-		"lint-css": "stylelint 'assets/src/sass/**/*.scss'",
+		"lint-css": "stylelint 'assets/**/*.{css,pcss}'",
 		"lint-css:fix": "npm run lint-css -- --fix",
 		"precommit": "npm run lint:php && npm run lint-css:fix && npm run lint:fix && npm run prod",
 		"cypress:open": "node_modules/.bin/cypress open"
