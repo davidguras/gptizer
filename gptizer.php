@@ -1,111 +1,82 @@
 <?php
-/*
-Plugin Name: GPTizer
-Plugin URI: https://example.com/gptizer
-Description: ChatGPT content improvement plugin
-Version: 1.0
-Author: David Guras
-Author URI: https://www.example.com
-License: GPL2
-*/
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://www.example.com
+ * @since             1.0.0
+ * @package           Gptizer
+ *
+ * @wordpress-plugin
+ * Plugin Name:       GPTizer
+ * Plugin URI:        https://www.example.com
+ * Description:       ChatGPT content improvement plugin
+ * Version:           1.0.0
+ * Author:            David Guras
+ * Author URI:        https://www.example.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       gptizer
+ * Domain Path:       /languages
+ */
 
-/*
-GPTizer is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-any later version.
-
-GPTizer is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GPTizer. If not, see {https://www.gnu.org/licenses/gpl-2.0.html}.
-*/
-
-// The following line prevents direct access to the plugin file.
-defined('ABSPATH') or die('Direct access not allowed.');
-
-if ( ! class_exists( 'GPTizer' ) ) {
-	class GPTizer {
-		public function __construct() {
-			$this->define_constants();
-
-			// add plugin menu item in WordPress dashboard
-			add_action( 'admin_menu', array( $this, 'add_menu' ) );
-
-			require_once( GPTIZER_PATH . 'post-types/class.gptizer-cpt.php' );
-			$GPTizer_Post_Type = new GPTizer_Post_Type();
-
-			require_once( GPTIZER_PATH . '/class.gptizer-settings.php' );
-			$GPTizer_Settings = new GPTizer_Settings();
-		}
-
-		public function define_constants(): void {
-			define( 'GPTIZER_PATH', plugin_dir_path( __FILE__ ) );
-			define( 'GPTIZER_URL', plugin_dir_url( __FILE__ ) );
-			define( 'GPTIZER_VERSION', '1.0.0' );
-		}
-
-		public static function activate(): void {
-			update_option( 'rewrite_rules', '' );
-		}
-
-		public static function deadctivate(): void {
-			flush_rewrite_rules();
-			unregister_post_type( 'gptizer' );
-		}
-
-		public static function uninstall(): void {
-		}
-
-		public function add_menu(): void {
-			add_menu_page(
-				'GPTizer Options',
-				'GPTizer',
-				'manage_options',
-				'gptizer_admin',
-				array( $this, 'gtpizer_settings_page' ),
-				'dashicons-welcome-view-site',
-			);
-
-			add_submenu_page(
-				'gtpizer_admin',
-				'Manage Slides',
-				'Manage Slides',
-				'manage_options',
-				'edit.php?post_type=gptizer',
-				null,
-			);
-
-			add_submenu_page(
-				'gtpizer_admin',
-				'Add New Slide',
-				'Add New Slide',
-				'manage_options',
-				'post-new.php?post_type=gptizer',
-				null,
-			);
-		}
-
-		public function gtpizer_settings_page(): void {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
-			if ( isset( $_GET[ 'settings-updated' ] ) ) {
-				add_settings_error( 'gtpizer_options', 'gtpizer_message', 'Settings Saved', 'success' );
-			}
-			settings_errors( 'gtpizer_options' );
-
-			require( GPTIZER_PATH . 'views/class.gptizer-settings.php' );
-		}
-	}
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
 }
 
-if ( class_exists( 'GPTizer' ) ) {
-	register_activation_hook( __FILE__, array( 'GPTizer', 'activate' ) );
-	register_deactivation_hook( __FILE__, array( 'GPTizer', 'deactivate' ) );
-	register_uninstall_hook( __FILE__, array( 'GPTizer', 'uninstall' ) );
-	$gtpizer = new GPTizer();
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'GPTIZER_VERSION', '1.0.0' );
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-gptizer-activator.php
+ */
+function activate_gptizer() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-gptizer-activator.php';
+	Gptizer_Activator::activate();
 }
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-gptizer-deactivator.php
+ */
+function deactivate_gptizer() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-gptizer-deactivator.php';
+	Gptizer_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_gptizer' );
+register_deactivation_hook( __FILE__, 'deactivate_gptizer' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-gptizer.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_gptizer() {
+
+	$plugin = new Gptizer();
+	$plugin->run();
+
+}
+
+run_gptizer();
